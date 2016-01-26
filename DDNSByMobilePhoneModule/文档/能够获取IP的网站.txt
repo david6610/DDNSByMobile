@@ -1,0 +1,26 @@
+
+
+公司外网IP：
+	
+218.13.182.108
+
+IP.cn
+	211.155.86.186
+
+百度：
+	202.108.22.5
+
+APNIC:
+	http://www.apnic.net/
+	
+http://20140507.ip138.com/ic.asp
+用socket 往 219.153.49.149 发送下面数据
+
+GET /ic.asp HTTP/1.1
+Accept: image/jpeg, application/x-ms-application, image/gif, application/xaml+xml, image/pjpeg, application/x-ms-xbap, application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, */*
+Accept-Language: zh-CN
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; Tablet PC 2.0)
+Accept-Encoding: gzip, deflate
+Host: 20140507.ip138.com
+Connection: Keep-Alive
+

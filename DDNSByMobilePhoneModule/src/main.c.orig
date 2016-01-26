@@ -1,0 +1,372 @@
+
+/****************************************************************************
+【文  件  名  称】main.c
+【功  能  描  述】TP100-AC8处理主程序
+【程  序  版  本】-
+【作          者】wes
+【时          间】2011.11.17
+【修          改】2012.03.20
+ Log:2012.03.28 V1.6 Modify by jerkoh
+                加UART1.地址全FF时是浅水湾与威斯特对讲协议
+                波特率:9600/8/Even/1
+				协议格式:STX=0xCA  FCC=校验和 可去楼层 8字节累加 ETX=0x55
+				如去5层和8层 对讲发送 64F->1F
+				0xCA 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x90  0x90 0x55
+                AC8接收OK=0xCA 0x05 0x55
+                AC8接收ERROR=0xCA 0x08 0x55
+****************************************************************************/
+
+/*! \file TP100-AC8 main.c
+ *	\brief the main function.
+ */
+#define  CPU_DEBUG 1
+#include "global.h"
+#include "stdio.h"
+
+/*! \brief Buzzer beep sequence.
+ *  Buzzer will beep on \a a ms, off \a b ms, on \a c ms, off \a d ms, on \a e and then off.
+ */
+#define BUZZER_BEEP(a, b, c, d, e)		BB_ON; delay_ms((a)); BB_OFF; delay_ms((b));\
+										BB_ON; delay_ms((c)); BB_OFF; delay_ms((d));\
+										BB_ON; delay_ms((e)); BB_OFF;
+
+/*! \brief The buzzer will start beep in a specific sequence when power up.
+ */
+#define BUZZER_BEEP_START()   BUZZER_BEEP(150, 100, 150, 380, 120)
+
+/*! \brief led flash in a quite mode for a while when power up.
+ *
+ */
+void LedPwrUp(void) {
+    u8 s =0;
+    for(s=0; s<20; s++) {						 //flash in short time when power in
+        GPIOA->ODR^=GPIO_Pin_4;
+        delay_ms(30);
+    }
+}
+
+int fputc(int ch, FILE *f) {
+    /* Write a character to the USART */
+    USART_SendData(USART1, (u8) ch);
+
+    /* Loop until the end of transmission */
+    while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+    {
+    }
+
+    return ch;
+}
+
+
+typedef struct {
+    unsigned int a;
+    unsigned long b;
+    unsigned long int c;
+    unsigned short d;
+    unsigned short int e;
+    unsigned long long f;
+} Packet_t;
+/*! \brief the application main.c
+ *
+ */
+int main(void)
+{
+    u8 local_addr  = 0;						  //local address
+    u8 local_addr1 = 0;						  //local1 address
+    u8 datlen = 0;							  //the variable for the array data's length
+    u8 power_up = 1;						  //power up
+    u8 fcc=0;
+    u8 i=0;
+    u8 err_flg=0;
+
+    led_red_sel = 1;
+    Platform_Init();
+    Flag_Init();
+
+    BUZZER_BEEP_START();
+    LedPwrUp();
+
+
+    while(1)
+    {
+        local_addr = (GPIO_ReadInputData(GPIOB) >> 12) & 0xf;
+        local_addr = ((opposite_subsequence(local_addr)) >> 4 & 0xf);
+        local_addr1= (GPIO_ReadInputData(GPIOB) >> 8) & 0xff;
+
+        if(relay_flag)
+        {
+            relay_flag = 0;
+            RL1_NO;
+            RL2_NO;						      //关闭继电器
+        }
+
+        if(rcv_usart1_end_flag)				  //Timer counts 6ms, then, usart1_end_flag turns high
+        {
+            datlen = Rcv_Usart1_To_Array();	  //get data from the buffer
+            if(datlen)
+            {
+                if(datlen<5)
+                {
+                    rcv_usart1_end_flag = 0;
+                    continue;
+                }
+				
+                data_makeup_byte((u8 *)(rcv_usart1_array + datlen - 5), 4);
+                datlen = datlen - 3;
+
+                if(CCIT_Check_CRC((u8 *)rcv_usart1_array, datlen-2))                   //check CRC, if CRC check ok,
+                {
+
+					if(local_addr1!=0xFF)
+					{
+                    rcv_addr   = (rcv_usart1_array[0] << 4) | rcv_usart1_array[1];	   //restore the value of addrs
+
+                    if((rcv_addr >> 3) == local_addr) 							       //decide whether	the addrs restored matchs local_addr
+                    {
+                        communication_str = 0;
+                        communication_count = 0;
+                        led_blue_sel = 1;
+
+                        relative_addr = rcv_addr % 8;
+
+                        switch(rcv_usart1_array[2])
+                        {
+                        case ADDR_SEARCH:
+                            if(power_up)												   //when power up
+                            {
+                                power_up = 0;
+                                if(rcv_usart1_array[2] == ADDR_SEARCH)					   //give the host power up instruction
+                                {
+                                    send_data_to_usart1(local_addr, POWER_UP);
+                                }
+                                break;
+                            }											  				   //receive the instruction of search
+                            if(AC8[relative_addr].send_ok == 1)							   //未发送
+                            {
+                                if(AC8[relative_addr].event == 0)
+                                {
+                                    send_data_to_usart1(rcv_addr, ADDR_TRANS);
+                                    AC8[relative_addr].send_ok = 0;						   //发送之后0k置0
+                                }
+                                else
+                                    send_data_to_usart1(rcv_addr, ADDR_SEARCH);
+                            }
+                            else
+                            {
+                                send_data_to_usart1(rcv_addr, ADDR_TRANS);
+                                AC8[relative_addr].send_times--;
+                                if(AC8[relative_addr].send_times == 0)
+                                {
+                                    AC8[relative_addr].event       = 1;
+                                    AC8[relative_addr].send_times  = 2;
+                                    AC8[relative_addr].send_str    = 0;
+                                    AC8[relative_addr].send_end    = 0;
+                                    AC8[relative_addr].send_count  = 0;
+                                    AC8[relative_addr].send_ok     = 1;
+                                }
+                            }
+                            break;
+
+                        case ADDR_TRANS:
+
+                            data_makeup_byte((u8 *)(rcv_usart1_array +  3), 2);		   //receive the instruction of event addr of upper transtmition
+                            if(rcv_usart1_array[3] == 0xf0)			                   //receive F0
+                            {
+                                AC8[relative_addr].event       = 1;
+                                AC8[relative_addr].send_times  = 2;
+                                AC8[relative_addr].send_str    = 0;
+                                AC8[relative_addr].send_end    = 0;
+                                AC8[relative_addr].send_count  = 0;
+                                AC8[relative_addr].send_ok     = 1;
+                            }
+                            if(rcv_usart1_array[3] == 0xf1)							   //receive F1
+                            {
+                                AC8[relative_addr].event       = 0;
+                                AC8[relative_addr].send_times--;
+                                AC8[relative_addr].send_str    = 0;
+                                AC8[relative_addr].send_end    = 0;
+                                AC8[relative_addr].send_count  = 0;
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+
+                    }  //end of camparation of rcv_addr & local_addr
+					}
+                    if(local_addr1==0xFF)  /*浅水湾UART2 ADDREE=0xFF 处理64层*/
+                    {
+                        communication_str = 0;
+                        communication_count = 0;
+                        led_blue_sel = 1;
+						rcv_addr   = (rcv_usart1_array[0] << 4) | rcv_usart1_array[1];
+                        relative_addr = rcv_addr;
+
+                        switch(rcv_usart1_array[2])
+                        {
+                        case ADDR_SEARCH:
+                            if(power_up)												   //when power up
+                            {
+                                power_up = 0;
+                                if(rcv_usart1_array[2] == ADDR_SEARCH)					   //give the host power up instruction
+                                {
+                                    send_data_to_usart1(relative_addr, POWER_UP);
+                                }
+                                break;
+                            }											  				   //receive the instruction of search
+                            if(AC8[relative_addr].send_ok == 1)							   //未发送
+                            {
+                                if(AC64[relative_addr].event == 0)
+                                {
+                                    send_data_to_usart1(relative_addr, ADDR_TRANS);
+                                    AC64[relative_addr].send_ok = 0;						   //发送之后0k置0
+                                }
+                                else
+                                    send_data_to_usart1(relative_addr, ADDR_SEARCH);
+                            }
+                            else
+                            {
+                                send_data_to_usart1(relative_addr, ADDR_TRANS);
+                                AC64[relative_addr].send_times--;
+                                if(AC64[relative_addr].send_times == 0)
+                                {
+                                    AC64[relative_addr].event       = 1;
+                                    AC64[relative_addr].send_times  = 2;
+                                    AC64[relative_addr].send_str    = 0;
+                                    AC64[relative_addr].send_end    = 0;
+                                    AC64[relative_addr].send_count  = 0;
+                                    AC64[relative_addr].send_ok     = 1;
+                                }
+                            }
+                            break;
+
+                        case ADDR_TRANS:
+
+                            data_makeup_byte((u8 *)(rcv_usart1_array +  3), 2);		   //receive the instruction of event addr of upper transtmition
+                            if(rcv_usart1_array[3] == 0xf0)			                   //receive F0
+                            {
+                                AC64[relative_addr].event       = 1;
+                                AC64[relative_addr].send_times  = 2;
+                                AC64[relative_addr].send_str    = 0;
+                                AC64[relative_addr].send_end    = 0;
+                                AC64[relative_addr].send_count  = 0;
+                                AC64[relative_addr].send_ok     = 1;
+                            }
+                            if(rcv_usart1_array[3] == 0xf1)							   //receive F1
+                            {
+                                AC64[relative_addr].event       = 0;
+                                AC64[relative_addr].send_times--;
+                                AC64[relative_addr].send_str    = 0;
+                                AC64[relative_addr].send_end    = 0;
+                                AC64[relative_addr].send_count  = 0;
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+
+
+
+                }  //end of CRC check
+            }  //end of RS485 receive
+            rcv_usart1_end_flag = 0;
+        }
+
+        /*浅水湾UART2 ADDREE=0xFF 处理64层*/
+        if(rcv_usart2_end_flag)				  //Timer counts 6ms, then, usart1_end_flag turns high
+        {
+            datlen = Rcv_Usart2_To_Array();	  //get data from the buffer
+            if(datlen)
+            {
+                if(datlen<11)
+                {
+                    rcv_usart2_end_flag = 0;
+                    continue;
+                }
+                else
+                {
+                    if((rcv_usart2_array[0]==WEST_PROTOCOL_STX)&&(rcv_usart2_array[WEST_PROTOCOL_LEN-1]==WEST_PROTOCOL_ETX))
+                    {
+                        fcc=0;
+                        for(i=1; i<=8; i++)
+                        {
+                            fcc+=rcv_usart2_array[i];
+                        }
+                        if(fcc==rcv_usart2_array[WEST_PROTOCOL_LEN-2])
+                        {
+                            //send west ok
+                            fcc=0;
+                            err_flg=0;
+                            process_west(rcv_usart2_array+1);
+                            RL2_NC;
+                            RL1_NC;
+                            event_count = 0;
+                            event_flag = 1;
+                        }
+                        else
+                        {
+                            //send west error
+                            err_flg=1;
+                        }
+                    }
+                    else
+                    {
+                        //send west error
+                        err_flg=1;
+                    }
+                }
+            }  //end of RS485 receive
+
+            if(1)
+            {
+                send_buffer[0]=WEST_PROTOCOL_STX;
+                if(err_flg==1)
+                {
+                    send_buffer[1]=WEST_PROTOCOL_NAK_ERR;
+                }
+                else
+                {
+                    send_buffer[1]=WEST_PROTOCOL_NAK_OK;
+                }
+                send_buffer[2]=WEST_PROTOCOL_ETX;
+                USART2_Put_Data(send_buffer, 3);
+            }
+            rcv_usart2_end_flag = 0;
+        }
+
+    }
+
+}
+
+void process_west(unsigned char *buf)
+{
+    unsigned char i,j,k;
+    for(j=0,i=0; i<8; i++)
+    {
+
+        for(k=0; k<8; k++)
+        {
+            if((buf[i]&0x80)==0x80)
+            {
+                AC64[j].event&=0; //产生事件
+                buf[i]<<=1;
+                j++;
+            }
+            else
+            {
+                AC64[j].event&=1;
+                buf[i]<<=1;
+                j++;
+            }
+        }
+
+    }
+    if(CPU_DEBUG==1)
+    {
+        for(i=0; i<64; i++)
+        {
+            USART2_Put_Data((u8 *)&AC64[i].event, 1);
+        }
+    }
+}

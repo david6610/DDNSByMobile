@@ -1,0 +1,14 @@
+..\list\uiplib.o: ..\src\uip1.0\uip\uiplib.c
+..\list\uiplib.o: ..\src\uip1.0\uip\uip.h
+..\list\uiplib.o: ..\src\uip1.0\uip\uipopt.h
+..\list\uiplib.o: ..\src\uip1.0\unix\uip-conf.h
+..\list\uiplib.o: C:\Keil\ARM\RV31\INC\inttypes.h
+..\list\uiplib.o: C:\Keil\ARM\RV31\INC\stdint.h
+..\list\uiplib.o: ..\src\uip1.0\apps\dhcpc\dhcpc.h
+..\list\uiplib.o: ..\src\uip1.0\uip\uip_timer.h
+..\list\uiplib.o: ..\src\uip1.0\uip\clock.h
+..\list\uiplib.o: ..\src\uip1.0\unix\clock-arch.h
+..\list\uiplib.o: ..\src\uip1.0\uip\pt.h
+..\list\uiplib.o: ..\src\uip1.0\uip\lc.h
+..\list\uiplib.o: ..\src\uip1.0\uip\lc-switch.h
+..\list\uiplib.o: ..\src\uip1.0\uip\uiplib.h

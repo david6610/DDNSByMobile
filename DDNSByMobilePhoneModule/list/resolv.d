@@ -1,0 +1,15 @@
+..\list\resolv.o: ..\src\uip1.0\apps\resolv\resolv.c
+..\list\resolv.o: ..\src\uip1.0\apps\resolv\resolv.h
+..\list\resolv.o: ..\src\uip1.0\uip\uipopt.h
+..\list\resolv.o: ..\src\uip1.0\unix\uip-conf.h
+..\list\resolv.o: C:\Keil\ARM\RV31\INC\inttypes.h
+..\list\resolv.o: C:\Keil\ARM\RV31\INC\stdint.h
+..\list\resolv.o: ..\src\uip1.0\apps\dhcpc\dhcpc.h
+..\list\resolv.o: ..\src\uip1.0\uip\uip_timer.h
+..\list\resolv.o: ..\src\uip1.0\uip\clock.h
+..\list\resolv.o: ..\src\uip1.0\unix\clock-arch.h
+..\list\resolv.o: ..\src\uip1.0\uip\pt.h
+..\list\resolv.o: ..\src\uip1.0\uip\lc.h
+..\list\resolv.o: ..\src\uip1.0\uip\lc-switch.h
+..\list\resolv.o: ..\src\uip1.0\uip\uip.h
+..\list\resolv.o: C:\Keil\ARM\RV31\INC\string.h

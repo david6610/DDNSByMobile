@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="X-UA-Compatible" content="IE=7">
+<link rel="stylesheet" type="text/css" href="/css/global.css"/>
+<link rel="stylesheet" type="text/css" href="/css/ip.css"/>
+<link rel="stylesheet" href="/css/thickbox.css" type="text/css" media="screen" />
+<link href="/css/help.css" rel="stylesheet" type="text/css" />
+<title>腾讯IP分享计划_IP分享</title>
+<script src="/js/prototype.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/showlayer.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/public.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/geo.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/iplist_thickbox.js"></script>
+</head>
+<body onload="setup();Change_Hide_bak(1);login_in(0);status();preselect('广东省');ShowIndex();">
+<div class="header">
+  <div class="padder"> <a class="logo" title="首页" style="background-image:url(/img/logo.jpg); width: 300px; height: 72px;"> </a>
+    <div class="links">
+      <div class="outerLink"><span id="login_uin"></span><span id="log_off"><a style="cursor:pointer"
+          href="javascript:void(0);" title="ip.qq.com" class="signup">[请登录]</a></span><span>|</span><a href="http://kf.qq.com/" target="_blank">联系客服</a> <span>|</span><a href="http://ip.qq.com/help.shtml" target="_blank">帮助</a></div>
+    </div>
+    <div class="nav">
+      <div class="navLeftBg">
+        <div class="navRightBg">
+          <div id="newHeader_master" class="mainNav"> <a href="http://ip.qq.com/cgi-bin/index" >首页</a> <a class="actived" href="http://ip.qq.com/cgi-bin/myip">IP分享</a> <a href="http://ip.qq.com/cgi-bin/iplist" >分享记录</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-wrap">
+  <div class="left">
+    <div class="left_top"></div>
+    <div class="left_middle">
+      <div class="import">
+        <h1>欢迎您，尊敬的用户<span style="color:#FF0000; font-size:16px"></span></h1>
+        <div class="im_bottom">
+        <form name="shareip" action="/cgi-bin/feedback" method="post">
+          <p id="search_show">您查询的IP为：<span class="red">218.13.182.108<input border="0" cellspacing="0" cellpadding="0"  name="ip_contend" id="ip_contend" value="218.13.182.108"  style="display:none"/></span></p>
+	  <input id="bkn" type="hidden" name="bkn"/>
+          <!--首页未登陆（默认）-->
+          <p id="login_show" style="display:none">您当前的IP为：<span class="red">218.13.182.108</span></p>
+          <!--首页未登陆查询-->
+          <p>该IP所在地为：<span>中国广东省珠海市&nbsp;电信</span></p>
+          <div id="change_hint" style="display:block">
+          <p class="gray">如果该IP实际地址与我们所记录的不符，请更改IP地址，帮助我们更好地为您服务</p>
+          <button class="type1" onclick="Change_Hide_bak(0);return false;">更改IP所在地</button>
+          </div>
+              <div id="change_field" style="display:none">
+                  <div class="from">该IP的实际所在地：
+                    <select class="select" name="country" id="s0" onchange="javascript:slctCountry(this);">
+                      <option value=中国>中国</option>
+<option value=巴林>巴林</option>
+<option value=韩国>韩国</option>
+<option value=黎巴嫩>黎巴嫩</option>
+<option value=尼泊尔>尼泊尔</option>
+<option value=泰国>泰国</option>
+<option value=巴基斯坦>巴基斯坦</option>
+<option value=阿拉伯联合酋长国>阿拉伯联合酋长国</option>
+<option value=不丹>不丹</option>
+<option value=阿曼>阿曼</option>
+<option value=阿塞拜疆>阿塞拜疆</option>
+<option value=朝鲜>朝鲜</option>
+<option value=菲律宾>菲律宾</option>
+<option value=柬埔寨>柬埔寨</option>
+<option value=卡塔尔>卡塔尔</option>
+<option value=吉尔吉斯斯坦>吉尔吉斯斯坦</option>
+<option value=马尔代夫>马尔代夫</option>
+<option value=马来西亚>马来西亚</option>
+<option value=蒙古>蒙古</option>
+<option value=沙特阿拉伯>沙特阿拉伯</option>
+<option value=塞浦路斯>塞浦路斯</option>
+<option value=文莱>文莱</option>
+<option value=老挝>老挝</option>
+<option value=日本>日本</option>
+<option value=土库曼斯坦>土库曼斯坦</option>
+<option value=土耳其>土耳其</option>
+<option value=哈萨克斯坦>哈萨克斯坦</option>
+<option value=巴勒斯坦国>巴勒斯坦国</option>
+<option value=塔吉克斯坦>塔吉克斯坦</option>
+<option value=格鲁吉亚>格鲁吉亚</option>
+<option value=科威特>科威特</option>
+<option value=叙利亚>叙利亚</option>
+<option value=印度>印度</option>
+<option value=印度尼西亚>印度尼西亚</option>
+<option value=亚美尼亚>亚美尼亚</option>
+<option value=阿富汗>阿富汗</option>
+<option value=乌兹别克斯坦>乌兹别克斯坦</option>
+<option value=斯里兰卡>斯里兰卡</option>
+<option value=伊拉克>伊拉克</option>
+<option value=越南>越南</option>
+<option value=伊朗>伊朗</option>
+<option value=也门>也门</option>
+<option value=约旦>约旦</option>
+<option value=缅甸>缅甸</option>
+<option value=锡金>锡金</option>
+<option value=孟加拉>孟加拉</option>
+<option value=新加坡>新加坡</option>
+<option value=以色列>以色列</option>
+<option value=埃及>埃及</option>
+<option value=布基纳法索>布基纳法索</option>
+<option value=马达加斯加>马达加斯加</option>
+<option value=阿尔及利亚>阿尔及利亚</option>
+<option value=布隆迪>布隆迪</option>
+<option value=赤道几内亚>赤道几内亚</option>
+<option value=多哥>多哥</option>
+<option value=安哥拉>安哥拉</option>
+<option value=埃塞俄比亚>埃塞俄比亚</option>
+<option value=尼日利亚>尼日利亚</option>
+<option value=南非>南非</option>
+<option value=塞内加尔>塞内加尔</option>
+<option value=佛得角>佛得角</option>
+<option value=圣多美和普林西比>圣多美和普林西比</option>
+<option value=斯威士兰>斯威士兰</option>
+<option value=尼日尔>尼日尔</option>
+<option value=毛里求斯>毛里求斯</option>
+<option value=几内亚比绍>几内亚比绍</option>
+<option value=厄立特里亚>厄立特里亚</option>
+<option value=坦桑尼亚>坦桑尼亚</option>
+<option value=苏丹>苏丹</option>
+<option value=几内亚>几内亚</option>
+<option value=科特迪瓦>科特迪瓦</option>
+<option value=乍得>乍得</option>
+<option value=科摩罗>科摩罗</option>
+<option value=塞拉利昂>塞拉利昂</option>
+<option value=中非>中非</option>
+<option value=赞比亚>赞比亚</option>
+<option value=乌干达>乌干达</option>
+<option value=毛里塔尼亚>毛里塔尼亚</option>
+<option value=利比亚>利比亚</option>
+<option value=喀麦隆>喀麦隆</option>
+<option value=吉布提>吉布提</option>
+<option value=利比里亚>利比里亚</option>
+<option value=津巴布韦>津巴布韦</option>
+<option value=刚果>刚果</option>
+<option value=马里>马里</option>
+<option value=莱索托>莱索托</option>
+<option value=加蓬>加蓬</option>
+<option value=摩洛哥>摩洛哥</option>
+<option value=冈比亚>冈比亚</option>
+<option value=加纳>加纳</option>
+<option value=肯尼亚>肯尼亚</option>
+<option value=马拉维>马拉维</option>
+<option value=纳米比亚>纳米比亚</option>
+<option value=塞舌尔>塞舌尔</option>
+<option value=博茨瓦纳>博茨瓦纳</option>
+<option value=莫桑比克>莫桑比克</option>
+<option value=贝宁>贝宁</option>
+<option value=卢旺达>卢旺达</option>
+<option value=索马里>索马里</option>
+<option value=突尼斯>突尼斯</option>
+<option value=象牙海岸>象牙海岸</option>
+<option value=法国>法国</option>
+<option value=阿尔巴尼亚>阿尔巴尼亚</option>
+<option value=都柏林>都柏林</option>
+<option value=爱沙尼亚>爱沙尼亚</option>
+<option value=安道尔>安道尔</option>
+<option value=摩纳哥>摩纳哥</option>
+<option value=卢森堡>卢森堡</option>
+<option value=西班牙>西班牙</option>
+<option value=瑞典>瑞典</option>
+<option value=马其顿>马其顿</option>
+<option value=意大利>意大利</option>
+<option value=圣马力诺>圣马力诺</option>
+<option value=匈牙利>匈牙利</option>
+<option value=南斯拉夫>南斯拉夫</option>
+<option value=希腊>希腊</option>
+<option value=瑞士>瑞士</option>
+<option value=摩尔多瓦>摩尔多瓦</option>
+<option value=立陶宛>立陶宛</option>
+<option value=拉脱维亚>拉脱维亚</option>
+<option value=梵蒂冈>梵蒂冈</option>
+<option value=冰岛>冰岛</option>
+<option value=波兰>波兰</option>
+<option value=英国>英国</option>
+<option value=列支敦士登>列支敦士登</option>
+<option value=斯洛伐克>斯洛伐克</option>
+<option value=荷兰>荷兰</option>
+<option value=乌克兰>乌克兰</option>
+<option value=葡萄牙>葡萄牙</option>
+<option value=马耳他>马耳他</option>
+<option value=俄罗斯>俄罗斯</option>
+<option value=比利时>比利时</option>
+<option value=克罗地亚>克罗地亚</option>
+<option value=芬兰>芬兰</option>
+<option value=保加利亚>保加利亚</option>
+<option value=德国>德国</option>
+<option value=捷克>捷克</option>
+<option value=罗马尼亚>罗马尼亚</option>
+<option value=挪威>挪威</option>
+<option value=斯洛文尼亚>斯洛文尼亚</option>
+<option value=奥地利>奥地利</option>
+<option value=白俄罗斯>白俄罗斯</option>
+<option value=丹麦>丹麦</option>
+<option value=波斯尼亚和黑塞哥维那>波斯尼亚和黑塞哥维那</option>
+<option value=爱尔兰>爱尔兰</option>
+<option value=阿根廷>阿根廷</option>
+<option value=巴拉圭>巴拉圭</option>
+<option value=巴西>巴西</option>
+<option value=玻利维亚>玻利维亚</option>
+<option value=委内瑞拉>委内瑞拉</option>
+<option value=智利>智利</option>
+<option value=乌拉圭>乌拉圭</option>
+<option value=苏里南>苏里南</option>
+<option value=秘鲁>秘鲁</option>
+<option value=哥伦比亚>哥伦比亚</option>
+<option value=厄瓜多尔>厄瓜多尔</option>
+<option value=圭亚那>圭亚那</option>
+<option value=马提尼岛>马提尼岛</option>
+<option value=百慕大>百慕大</option>
+<option value=巴哈马>巴哈马</option>
+<option value=巴拿马>巴拿马</option>
+<option value=尼加拉瓜>尼加拉瓜</option>
+<option value=巴巴多斯>巴巴多斯</option>
+<option value=牙买加>牙买加</option>
+<option value=海地>海地</option>
+<option value=墨西哥>墨西哥</option>
+<option value=危地马拉>危地马拉</option>
+<option value=古巴>古巴</option>
+<option value=洪都拉斯>洪都拉斯</option>
+<option value=格林纳达>格林纳达</option>
+<option value=哥斯达黎加>哥斯达黎加</option>
+<option value=多米尼加共和国>多米尼加共和国</option>
+<option value=圣基茨和尼维斯>圣基茨和尼维斯</option>
+<option value=美国>美国</option>
+<option value=圣文森特和格林纳丁斯>圣文森特和格林纳丁斯</option>
+<option value=特立尼达和多巴哥>特立尼达和多巴哥</option>
+<option value=安提瓜和巴布达>安提瓜和巴布达</option>
+<option value=多米尼克国>多米尼克国</option>
+<option value=伯利兹>伯利兹</option>
+<option value=萨尔瓦多>萨尔瓦多</option>
+<option value=加拿大>加拿大</option>
+<option value=圣卢西亚>圣卢西亚</option>
+<option value=澳大利亚>澳大利亚</option>
+<option value=瑙鲁>瑙鲁</option>
+<option value=帕劳>帕劳</option>
+<option value=巴布亚新几内亚>巴布亚新几内亚</option>
+<option value=萨摩亚>萨摩亚</option>
+<option value=斐济>斐济</option>
+<option value=所罗门群岛>所罗门群岛</option>
+<option value=基里巴斯>基里巴斯</option>
+<option value=密克罗尼西亚联邦>密克罗尼西亚联邦</option>
+<option value=图瓦卢>图瓦卢</option>
+<option value=新西兰>新西兰</option>
+<option value=汤加>汤加</option>
+<option value=马绍尔群岛>马绍尔群岛</option>
+<option value=瓦努阿图>瓦努阿图</option>
+
+                    </select>
+                    <select class="select" name="province" id="s1">
+                      <option></option>
+                    </select>
+                    <select class="select" name="city" id="s2">
+                      <option></option>
+                    </select>
+                    <select class="select" name="town" id="s3">
+                      <option></option>
+                    </select>
+                  </div>
+                  <button class="type2" onclick="OnSubmit();" type="submit">提交更改信息</button>
+                  <button class="type3" onclick="Change_Hide_bak(1);return false;">取消</button>
+              </div>
+           </form>
+        </div>
+      </div>
+    </div>
+    <div class="left_bottom"></div>
+  </div>
+    <script language="JavaScript">
+	function refreshimg2()
+	{
+		document.getElementById('newimg2').src="http://ptlogin2.qq.com/getimage?"+Math.random();
+	}
+	</script>
+  <script type="text/javascript">
+  	function OnSearchIpSubmit()
+	{
+		document.getElementById('searchip1').value = trim(document.getElementById('searchip1').value);
+		if(document.getElementById('searchip1').value=="")
+		{
+			alert('IP地址不能为空');
+			return false;
+		}
+			else
+		{
+			var pattern = /^\d{1,3}(\.\d{1,3}){3}$/;
+			if(!pattern.exec(document.getElementById('searchip1').value))
+			{
+			  alert('请输入正确的地址\n');
+			  document.getElementById('searchip1').value="";
+			  document.searchip.searchip1.focus();
+			  return false
+			}
+			document.searchip.submit();
+		}
+	}
+  </script>
+  <div class="right">
+  <form name="searchip" action="/cgi-bin/searchip" method="post" onsubmit="return OnSearchIpSubmit();">
+    <div class="find">
+      <input  name="searchip1" id="searchip1" value="请输入查询的ip" onclick="ClearInfo(this);" onkeyup="if(event.keyCode==13){return OnSearchIpSubmit();}" />
+      <button type="submit">查询</button>
+    </div>
+          </form>
+     <div class="question">
+      <div class="q_top"></div>
+      <div class="q_middle">
+        <h1>常见问题解答</h1>
+        <div style="padding:0 5px 0 15px">
+          <ul>
+            <li><a href="http://ip.qq.com/help.shtml">QQ上显示的登录地点和地理信息为什么与我的实际所在地不符？</a></li>
+            <li><a href="http://ip.qq.com/help.shtml">我的QQ上线之后为什么经常显示不同的登录地？</a></li>
+            <li><a href="http://ip.qq.com/help.shtml">为什么我提交的IP信息系统未给予采纳？</a></li>
+            <li><a href="http://ip.qq.com/help.shtml">分享IP计划可以给您带来什么好处？</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="q_bottom"></div>
+    </div>
+  </div>
+</div>
+<div class="footer01" align="center">
+<a href="http://im.qq.com" target="blank">腾讯软件中心</a> | 
+<a href="http://safe.qq.com" target="blank">腾讯安全中心</a> |
+<a href="http://account.qq.com" target="blank">腾讯帐号服务</a> |
+<a href="http://service.qq.com" target="blank">腾讯客服中心</a> <br/>
+Copyright &copy; 1998 - <script type="text/javascript">document.write((new Date()).getFullYear());</script> TENCENT Inc. All Rights Reserved<br />
+腾讯公司&nbsp;&nbsp;<a href="http://www.tencent.com/law/mo_law.shtml?/law/copyright.htm" target="_blank">版权所有</a></div>
+<script src="http://im-img.qq.com/js/nohost.js"></script>
+
+<script type="text/javascript" src="http://ip.qq.com/js/main.js"></script>
+</body>
+</html>
+
+<SCRIPT LANGUAGE="JavaScript">
+var g_uin=0;
+var g_show=0;
+function login_in(uin)
+{
+	if(uin!=0 || getUin()!="" )
+	{
+		if(uin!=0)
+			g_uin=uin;
+		//document.getElementById('login_index').style.visibility="visible";
+		//document.getElementById('login_uin').style.visibility="visible";
+		//document.getElementById('login_field').style.display="none";
+		document.getElementById('login_uin').innerHTML="您登录的QQ号码："+uin;
+		document.getElementById('log_off').innerHTML="<a class=\"exit\" style=\"cursor:pointer\" onclick='javascript:if(confirm(\"确实要取消登陆吗?\")){delCookie();}' href='#'>[退出]</a>";
+		if(g_show==1)
+			Change_Hide_bak(0);
+	}
+	else
+	{
+		g_uin=uin;
+	}
+
+	return false;
+}
+
+function ShowIndex(index)
+{
+	document.getElementById('search_show').style.display=index?"block":"none";
+	document.getElementById('login_show').style.display=index?"none":"block";
+	return false;
+}
+function OnSubmit()
+{
+	var flag=1,errmsg="";
+
+	if( document.shareip.country.value=="中国" && document.shareip.province.value=="省份" && document.shareip.city.value=="地级市" && document.shareip.town.value=="市、县级市、县")
+	{
+		flag=0;
+		errmsg=errmsg+"您还没有选择该IP所在地区\n";
+	}
+	if(flag==1)
+	{
+		if(document.shareip.country.value!="中国")
+		{
+			document.shareip.province.value="";
+			document.shareip.city.value="";
+			document.shareip.town.value="";
+		}
+
+		document.shareip.province.value=document.shareip.province.value.replace("省份","");
+		document.shareip.city.value=document.shareip.city.value.replace("地级市","");
+		document.shareip.town.value=document.shareip.town.value.replace("市、县级市、县","");
+		document.shareip.submit();
+	}
+	else
+	{
+		alert(errmsg);
+		return false
+	}
+}
+
+void function () {
+        document.getElementById('bkn').value = getBkn(getCookie('skey'));
+
+        function getCookie(name) {
+            var m = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+            return !m ? "" : decodeURIComponent(m[2]);
+        }
+
+        function getBkn(skey) {
+            if (!skey) { return ""; }
+            var hash = 5381;
+            for (var i = 0, len = skey.length; i < len; ++i) {
+                hash += (hash << 5) + skey.charAt(i).charCodeAt();
+            }
+            return hash & 0x7fffffff;
+        }
+    }();
+</SCRIPT>
